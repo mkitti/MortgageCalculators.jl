@@ -1,4 +1,4 @@
-using MortageCalculators
+using MortgageCalculators
 using Test
 
 @testset "MortageCalculators.jl" begin

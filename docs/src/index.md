@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = MortageCalculators
+CurrentModule = MortgageCalculators
 ```
 
-# MortageCalculators
+# MortgageCalculators
 
-Documentation for [MortageCalculators](https://github.com/mkitti/MortageCalculators.jl).
+Documentation for [MortgageCalculators](https://github.com/mkitti/MortgageCalculators.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [MortageCalculators]
+Modules = [MortgageCalculators]
 ```
