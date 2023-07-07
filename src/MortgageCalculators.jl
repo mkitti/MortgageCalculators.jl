@@ -1,6 +1,7 @@
 module MortgageCalculators
 
 using FixedPointDecimals
+using UnicodePlots
 
 export Mortgage
 export principal, annual_interest_rate, monthly_payment
@@ -95,6 +96,32 @@ end
 
 function change(f, m::Mortgage, m2::Mortgage)
     f(m) - f(m2)
+end
+
+function UnicodePlots.lineplot(m::Mortgage{T}; x_max = months(m), y_max = 0) where T
+    _principal = principal(m)
+    monthly_interest_rate = m.annual_interest_rate / 12
+    _monthly_payment = monthly_payment(m)
+    _total_interest = 0
+    _months = 0
+    #principal_over_time = Vector{T}(undef, months(m))
+    #total_interest_over_time = Vector{T}(undef, months(m))
+    principal_over_time = T[]
+    total_interest_over_time = T[]
+    while _principal > 0
+        _months += 1
+        monthly_interest = monthly_interest_rate * _principal
+        _total_interest += monthly_interest
+        _principal = _principal - _monthly_payment + monthly_interest
+        # principal_over_time[_months] = principal
+        # total_interest_over_time[_months] = _total_interest
+        push!(principal_over_time, _principal)
+        push!(total_interest_over_time, _total_interest)
+    end
+    h = lineplot(1:length(principal_over_time), [principal_over_time total_interest_over_time], name = ["Principal" "Total interest"], labels = true, xlim=(0,x_max), ylim=(0,max(principal(m), _total_interest, y_max)))
+    principal_over_time, total_interest_over_time
+    println(_months)
+    h
 end
 
 end
