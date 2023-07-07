@@ -1,6 +1,6 @@
 using MortgageCalculators
 using Test
 
-@testset "MortageCalculators.jl" begin
+@testset "MortgageCalculators.jl" begin
     # Write your tests here.
 end

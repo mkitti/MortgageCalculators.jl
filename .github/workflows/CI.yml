@@ -58,6 +58,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using MortageCalculators
-            DocMeta.setdocmeta!(MortageCalculators, :DocTestSetup, :(using MortageCalculators); recursive=true)
-            doctest(MortageCalculators)'
+            using MortgageCalculators
+            DocMeta.setdocmeta!(MortgageCalculators, :DocTestSetup, :(using MortgageCalculators); recursive=true)
+            doctest(MortgageCalculators)'
