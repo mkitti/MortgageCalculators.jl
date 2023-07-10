@@ -53,12 +53,12 @@ function monthly_payment(principal, annual_interest_rate, months=360)
 end
 
 
-function total_interest(m::Mortgage)
-    monthly_payment(m) * months_float(m) - principal(m)
+function total_interest(m::Mortgage{T}) where T
+    T(monthly_payment(m) * months_float(m) - principal(m))
 end
 
-function total_interest(m::Mortgage, extra_payment)
-    simulate_extra_payment(m::Mortgage, extra_payment)[1]
+function total_interest(m::Mortgage{T}, extra_payment) where T
+    T(simulate_extra_payment(m::Mortgage, extra_payment)[1])
 end
 
 function simulate_extra_payment(m::Mortgage, extra_payment)
@@ -110,7 +110,7 @@ function UnicodePlots.lineplot(m::Mortgage{T}; x_max = months(m), y_max = 0) whe
     total_interest_over_time = T[]
     while _principal > 0
         _months += 1
-        monthly_interest = monthly_interest_rate * _principal
+        monthly_interest = convert(T, monthly_interest_rate * _principal)
         _total_interest += monthly_interest
         _principal = _principal - _monthly_payment + monthly_interest
         # principal_over_time[_months] = principal
@@ -118,10 +118,19 @@ function UnicodePlots.lineplot(m::Mortgage{T}; x_max = months(m), y_max = 0) whe
         push!(principal_over_time, _principal)
         push!(total_interest_over_time, _total_interest)
     end
-    h = lineplot(1:length(principal_over_time), [principal_over_time total_interest_over_time], name = ["Principal" "Total interest"], labels = true, xlim=(0,x_max), ylim=(0,max(principal(m), _total_interest, y_max)))
+    h = lineplot(1:length(principal_over_time), [principal_over_time total_interest_over_time], name = ["Principal" "Total interest"], labels = true, xlim=(0,x_max), ylim=(0,max(principal(m), _total_interest, y_max)), title="Mortgage. Total Interest: $_total_interest")
     principal_over_time, total_interest_over_time
     println(_months)
     h
+end
+
+function Base.show(io::IO, ::MIME"text/plain", m::Mortgage)
+    show(io, typeof(m))
+    println(":")
+    println("           Principal: ", principal(m))
+    println("Annual Interest Rate: ", annual_interest_rate(m)*100, "%")
+    println("     Monthly Payment: ", monthly_payment(m))
+    println("      Total Interest: ", total_interest(m))
 end
 
 end
