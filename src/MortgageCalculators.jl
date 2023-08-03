@@ -125,11 +125,13 @@ function UnicodePlots.lineplot(m::Mortgage{T}; x_max = months(m), y_max = 0) whe
 end
 
 function Base.show(io::IO, ::MIME"text/plain", m::Mortgage)
+    _months = months(m)
     show(io, typeof(m))
     println(":")
     println("           Principal: ", principal(m))
     println("Annual Interest Rate: ", annual_interest_rate(m)*100, "%")
     println("     Monthly Payment: ", monthly_payment(m))
+    println("    Months to Payoff: ", _months, " or ", round(_months/12, digits=1), " years")
     println("      Total Interest: ", total_interest(m))
 end
 
